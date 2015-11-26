@@ -1,0 +1,51 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MeArm 3.8.2\n"
+"PO-Revision-Date: 2015-11-26 03:32 UTC\n"
+"Last-Translator: matias <matias@localhost.matiasdelellis>\n"
+"Language: es_AR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "MeArm Desktop"
+msgstr ""
+
+#: FMain.class:25
+msgid "Name"
+msgstr "Nombre"
+
+#: FMain.form:36
+msgid "MeArm"
+msgstr ""
+
+#: FMain.form:39
+msgid "Quit"
+msgstr "Salir"
+
+#: FMain.form:56
+msgid "Position Name"
+msgstr "Nombre de la Posicion"
+
+#: FMain.form:80
+msgid "Base"
+msgstr "Base"
+
+#: FMain.form:108
+msgid "Shoulder"
+msgstr "Hombro"
+
+#: FMain.form:128
+msgid "Elbow"
+msgstr "Codo"
+
+#: FMain.form:148
+msgid "Gripper"
+msgstr "Pinza"
+
+#: FMain.form:168
+msgid "Play"
+msgstr "Ejecutar"
+

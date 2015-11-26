@@ -1,0 +1,136 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,124,68)
+  Text = ("MeArm Desktop")
+  Icon = Picture["icon:/16/game"]
+  Arrangement = Arrange.Fill
+  { MeArm Menu
+    Text = ("MeArm")
+    { Quit Menu
+      Text = ("Quit")
+      Picture = Picture["icon:/16/quit"]
+    }
+  }
+  { SplitMain HSplit
+    MoveScaled(1,1,121,62)
+    { BoxSliders VBox
+      MoveScaled(2,2,67,57)
+      Padding = 4
+      { HBox2 HBox
+        MoveScaled(1,1,57,4)
+        { TextBoxPosition TextBox
+          MoveScaled(1,0,26,4)
+          ToolTip = ("Position Name")
+          Drop = True
+          Expand = True
+          Text = ("Position Name")
+        }
+        { ToolButtonAdd ToolButton
+          MoveScaled(52,0,4,4)
+          Picture = Picture["icon:/medium/add"]
+        }
+      }
+      { Hbox3 HBox
+        MoveScaled(1,6,64,36)
+        Expand = True
+        Spacing = True
+        { VBox3 VBox
+          MoveScaled(2,2,14,28)
+          Expand = True
+          { SliderBase Slider
+            MoveScaled(5,1,4,22)
+            Tracking = False
+            ToolTip = ("Base")
+            Expand = True
+            MaxValue = 180
+            Value = 90
+          }
+          { Label1 Label
+            MoveScaled(2,23,10,4)
+            Text = ("Base")
+            Alignment = Align.Center
+          }
+        }
+        { VBox4 VBox
+          MoveScaled(17,2,14,28)
+          Expand = True
+          { SliderShoulder Slider
+            MoveScaled(5,1,4,22)
+            Tracking = False
+            ToolTip = ("Shoulder")
+            Expand = True
+            MaxValue = 180
+            Value = 90
+          }
+          { Label2 Label
+            MoveScaled(2,23,10,4)
+            Text = ("Shoulder")
+            Alignment = Align.Center
+          }
+        }
+        { VBox5 VBox
+          MoveScaled(32,2,14,28)
+          Expand = True
+          { SliderElbow Slider
+            MoveScaled(5,1,4,22)
+            Tracking = False
+            ToolTip = ("Elbow")
+            Expand = True
+            MaxValue = 180
+            Value = 90
+          }
+          { Label3 Label
+            MoveScaled(2,23,10,4)
+            Text = ("Elbow")
+            Alignment = Align.Center
+          }
+        }
+        { VBox6 VBox
+          MoveScaled(47,2,14,28)
+          Expand = True
+          { SliderGripper Slider
+            MoveScaled(5,1,4,22)
+            Tracking = False
+            ToolTip = ("Gripper")
+            Expand = True
+            MaxValue = 180
+            Value = 90
+          }
+          { Label4 Label
+            MoveScaled(2,23,10,4)
+            Text = ("Gripper")
+            Alignment = Align.Center
+          }
+        }
+      }
+      { SerialArm #SerialPort
+        #MoveScaled(53,47)
+      }
+    }
+    { VBox1 VBox
+      MoveScaled(71,2,48,57)
+      Padding = 4
+      { HBox1 HBox
+        MoveScaled(1,1,44,4)
+        { ToolButtonPlay ToolButton
+          MoveScaled(1,0,9,4)
+          AutoResize = True
+          Text = ("Play")
+          Picture = Picture["icon:/medium/play"]
+          Toggle = True
+        }
+        { SpinnerPlay Spinner
+          MoveScaled(38,0,4,4)
+          Visible = False
+        }
+      }
+      { GridViewPlay GridView
+        MoveScaled(2,6,43,49)
+        Expand = True
+        Mode = Select.Single
+        Header = GridView.Both
+      }
+    }
+  }
+}

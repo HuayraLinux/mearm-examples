@@ -1,0 +1,159 @@
+' Gambas class file
+
+Private Comm As SerialPort
+Private bConnected As Boolean = False
+
+Private txtPort As String
+Private txtBaudrate As String
+Private txtDataBits As String
+Private txtStopBits As String
+
+Private lastPostion As Integer = 0
+
+Public Sub Form_Open()
+  Comm = New SerialPort As "Comm"
+
+  ' Init Windows settings
+  Me.Top = Settings["Window/Top", Me.Top]
+  Me.Left = Settings["Window/Left", Me.Left]
+  Me.Height = Settings["Window/Height", Me.Height]
+  Me.Width = Settings["Window/Width", Me.Width]
+
+  'Init GridView
+  With GridViewPlay
+    .columns.count = 5
+    .Columns[0].title = ("Name")
+    .Columns[0].Width = 120
+    .Columns[1].title = ("Base")
+    .Columns[2].title = ("Shoulder")
+    .Columns[3].title = ("Elbow")
+    .Columns[4].title = ("Gripper")
+  End With
+
+  ' Init Serial Port settings
+  txtPort = Settings["PortName", "/dev/ttyACM0"]
+  txtBaudrate = Settings["Speed", "9600"]
+  txtDataBits = Settings["DataBits", "8"]
+  txtStopBits = Settings["StopBits", "1"]
+
+  ' Connect to serial port
+  Connect()
+End
+
+Public Sub Form_Close()
+  Settings["Window/Top"] = Me.Top
+  Settings["Window/Left"] = Me.Left
+  Settings["Window/Height"] = Me.Height
+  Settings["Window/Width"] = Me.Width
+
+  Comm.Close()
+End
+
+Public Sub Quit_Click()
+  Comm.Close()
+  Me.Close
+End
+
+'
+' Serial Connection
+'
+Public Sub Connect()
+  Dim i As Integer
+
+  Comm.PortName = txtPort
+  Comm.Speed = CInt(txtBaudrate)
+  Comm.DataBits = CInt(txtDataBits)
+  Comm.StopBits = CInt(txtStopBits)
+  Comm.FlowControl = Comm.None
+  Comm.Parity = Comm.None
+
+ 'USB based ports
+  For i = 0 To 8
+    Comm.PortName = "/dev/ttyACM" & Format(i, "0")
+    Try Comm.Open
+    If Not Error 
+      bConnected = True
+      Break
+    Endif
+  Next
+
+  If Not bConnected Then
+    Quit
+  Endif
+End
+
+Public Sub comm_Read()
+  Dim s As String
+  Read #Comm, s, Lof(Comm)
+
+  If Not ToolButtonPlay.Value Then
+    Return
+  Endif
+
+  If IsNumber(s) Then
+    GridViewPlay.Select(lastPostion)
+    lastPostion = lastPostion + 1
+    If lastPostion >= GridViewPlay.Rows.Count Then
+      lastPostion = 0
+    Endif
+    Write #Comm, "b" & GridViewPlay[lastPostion, 1].Text & "s" & GridViewPlay[lastPostion, 2].Text & "e" & GridViewPlay[lastPostion, 3].Text & "g" & GridViewPlay[lastPostion, 4].Text
+  Endif
+End
+
+'
+' GridView
+'
+
+Public Sub ToolButtonAdd_Click()
+  Dim count As Integer
+
+  GridViewPlay.Rows.Count = GridViewPlay.Rows.Count + 1
+
+  count = GridViewPlay.Rows.Count - 1
+
+  GridViewPlay[count, 0].Text = TextBoxPosition.Text
+  GridViewPlay[count, 1].Text = SliderBase.Value
+  GridViewPlay[count, 2].Text = SliderShoulder.Value
+  GridViewPlay[count, 3].Text = SliderElbow.Value
+  GridViewPlay[count, 4].Text = SliderGripper.Value
+
+End
+
+Public Sub ToolButtonPlay_Click()
+  SpinnerPlay.Visible = ToolButtonPlay.Value
+  BoxSliders.Enabled = Not ToolButtonPlay.Value
+
+  ' Select first postion and init sequence.
+  lastPostion = 0
+  GridViewPlay.Select(lastPostion)
+
+  If GridViewPlay.Rows.Count Then
+    Write #Comm, "b" & GridViewPlay[lastPostion, 1].Text & "s" & GridViewPlay[lastPostion, 2].Text & "e" & GridViewPlay[lastPostion, 3].Text & "g" & GridViewPlay[lastPostion, 4].Text
+  Endif
+End
+
+Public Sub SliderBase_Change()
+  Write #Comm, "b" & SliderBase.Value & "s" & SliderShoulder.Value & "e" & SliderElbow.Value & "g" & SliderGripper.Value
+End
+
+Public Sub SliderShoulder_Change()
+  Write #Comm, "b" & SliderBase.Value & "s" & SliderShoulder.Value & "e" & SliderElbow.Value & "g" & SliderGripper.Value
+End
+
+Public Sub SliderElbow_Change()
+  Write #Comm, "b" & SliderBase.Value & "s" & SliderShoulder.Value & "e" & SliderElbow.Value & "g" & SliderGripper.Value
+End
+
+Public Sub SliderGripper_Change()
+  Write #Comm, "b" & SliderBase.Value & "s" & SliderShoulder.Value & "e" & SliderElbow.Value & "g" & SliderGripper.Value
+End
+
+Public Sub GridViewPlay_Activate()
+  Dim row As Integer
+  row = GridViewPlay.Row
+
+  SliderBase.Value = GridViewPlay[row, 1].Text
+  SliderShoulder.Value = GridViewPlay[row, 2].Text
+  SliderElbow.Value = GridViewPlay[row, 3].Text
+  SliderGripper.Value = GridViewPlay[row, 4].Text
+End
